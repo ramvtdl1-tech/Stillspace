@@ -1,0 +1,44 @@
+STILLSPACE — ACTUAL-FOOTAGE DEMONSTRATION
+Target duration: 2:45; hard maximum: less than 3:00.
+Use real Quest or equivalent XR emulator footage. This is a voiceover/caption
+script, not a claim that recording, hardware validation, or public upload is done.
+For emulator footage, retain a visible "Quest 3 emulator footage" label.
+
+00:00–00:15
+Stillspace makes room for one thing: a small intention, a few quiet minutes,
+and a garden that remembers the time you made for yourself.
+
+00:15–00:35
+Settle into a seat. Point at a control and pinch to select. The workspace stays
+in front of you, and recentering brings it back when you need it.
+
+00:35–01:00
+Choose an intention, or create one here with the spatial keyboard. The focus
+loop includes naming your own task without leaving the immersive experience.
+
+01:00–01:25
+Choose two, five, or eight minutes. Begin when you are ready. Pause when life
+interrupts, then resume deliberately. There is nothing to catch up with.
+
+01:25–01:55
+[If elapsed time is removed, show "Time cut — real two-minute session" on screen.]
+[Use the following only over genuine recorded completion.]
+Finish a session and leave a blossom in your garden. The timer records one
+completed moment; marking the task done is a separate choice.
+
+01:55–02:20
+Leave a field note and see the time you have made for yourself. Tasks, notes,
+and progress stay in this browser. No application account or AI service is needed.
+
+02:20–02:45
+Save and exit whenever you need. A running timer pauses, ready for an explicit
+return. One intention. One quiet moment. Stillspace — make room for one thing.
+
+EDITOR NOTES
+- Omit any line whose behavior is not shown and verified in the recorded build.
+- Do not imply physical Quest frame-rate results from emulator footage.
+- Do not modify timer state or fabricate garden rewards to shorten the film.
+- Simple labels, captions, cuts, and actual app audio are sufficient.
+- Keep narration/captions English; no AI-generated gameplay video or stock
+  footage presented as this application.
+- Final public YouTube/Vimeo upload and exact URL remain entrant release steps.

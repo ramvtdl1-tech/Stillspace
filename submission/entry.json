@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "project": {
+    "title": "Stillspace — make room for one thing",
+    "tagline": "A seated, hands-first focus garden: choose one intention, make a little time, and leave a visible sign of progress.",
+    "track": "Productivity",
+    "proposed_division": "New Experience",
+    "division_provenance_confirmed_by_entrant": null,
+    "language": "English",
+    "platform": "IWSDK / WebXR",
+    "target_device_family": "Meta Quest",
+    "input": "Hand ray pointing and pinch selection; desktop companion controls",
+    "session_minutes": [2, 5, 8],
+    "limits": {
+      "tasks": 8,
+      "task_characters": 72,
+      "note_characters": 500,
+      "retained_sessions": 500,
+      "visible_garden_blossoms": 12
+    },
+    "features_not_claimed": [
+      "passthrough",
+      "room scanning",
+      "eye tracking",
+      "persistent physical-space anchors",
+      "cloud synchronization",
+      "multiplayer",
+      "Meta VR Glasses compatibility"
+    ],
+    "proposed_wider_launch_date": "2026-11-17",
+    "launch_status": "Proposed; subject to physical Quest validation and release review"
+  },
+  "contest": {
+    "name": "Meta VR Start Developer Competition 2026",
+    "rules_url": "https://start-developer-competition-26.devpost.com/rules",
+    "deadline_utc": "2026-11-18T20:00:00Z",
+    "deadline_ist": "2026-11-19T01:30:00+05:30",
+    "approximate_announcement_date": "2026-12-11",
+    "freeze_after_deadline": true
+  },
+  "links": {
+    "application_https_url": null,
+    "application_access_tested_signed_out": null,
+    "public_youtube_or_vimeo_url": null,
+    "video_access_tested_signed_out": null,
+    "optional_source_repository_url": null
+  },
+  "entrant": {
+    "representative_name": null,
+    "team_or_organization_name": null,
+    "eligibility_confirmed": null,
+    "meta_vr_start_membership_confirmed": null,
+    "meta_developer_access_confirmed": null,
+    "one_entry_limit_and_authority_confirmed": null,
+    "funding_conflicts_and_contractual_restrictions_reviewed": null,
+    "authorship_and_dependency_rights_reviewed": null
+  },
+  "evidence": {
+    "description_file": "docs/SUBMISSION.md",
+    "narration_file": "submission/narration.txt",
+    "validation_file": "docs/TESTING.md",
+    "release_source_commit": null,
+    "release_deployment_version": null,
+    "release_artifact_sha256": null,
+    "local_demo_video_file": null,
+    "demo_footage_type": null,
+    "demo_duration_seconds": null,
+    "screenshots": [],
+    "physical_quest": {
+      "status": "pending",
+      "headset_model": null,
+      "os_version": null,
+      "browser_version": null,
+      "hands_only_journey_passed": null,
+      "comfort_test_passed": null,
+      "minimum_60_fps_verified": null,
+      "measurement_method": null,
+      "sample_duration_seconds": null,
+      "minimum_fps": null,
+      "sustained_fps": null
+    }
+  },
+  "submission": {
+    "status": "not_submitted",
+    "devpost_project_url": null,
+    "submitted_at": null,
+    "receipt_retained": null,
+    "pending_external_steps": [
+      "Entrant eligibility, Start membership, and developer access confirmation",
+      "Final free HTTPS judge link and access test",
+      "Physical Quest interaction, comfort, and frame-rate validation",
+      "Public YouTube or Vimeo actual-footage demonstration link",
+      "Entrant review and Devpost submission before the deadline"
+    ]
+  }
+}

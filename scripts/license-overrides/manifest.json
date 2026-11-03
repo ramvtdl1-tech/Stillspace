@@ -1,0 +1,24 @@
+{
+  "yoga-layout@3.2.1": {
+    "file": "yoga-LICENSE.txt",
+    "license": "MIT",
+    "source": "https://raw.githubusercontent.com/facebook/yoga/v3.2.1/LICENSE"
+  },
+  "@sentry/server-utils@10.78.0": {
+    "file": "sentry-LICENSE.txt",
+    "license": "MIT",
+    "source": "https://raw.githubusercontent.com/getsentry/sentry-javascript/10.78.0/LICENSE"
+  },
+  "railroad-diagrams@1.0.0": {
+    "file": "railroad-diagrams-LICENSE.txt",
+    "license": "CC0-1.0",
+    "source": "https://github.com/tabatkins/railroad-diagrams",
+    "evidence": "Exact license declaration from published railroad-diagrams@1.0.0/railroad-diagrams.js header."
+  },
+  "@drawcall/uikitml@0.1.8": {
+    "distribution": "excluded-client",
+    "reason": "The application does not use UIKitML. A client-only Vite alias replaces the runtime import with a project-owned disabled adapter, and the production build gate rejects any included @drawcall/uikitml module. The original package remains installed for SDK/build tooling only.",
+    "source": "https://github.com/drawcall-ai/uikitml/tree/c82fe59144d515a325add968309b3f18f9924d6c",
+    "evidence": "The exact v0.1.8 repository tree has no license/notice paths; the published package does not declare a license. Exclusion is not a claim that this code is freely licensed."
+  }
+}
