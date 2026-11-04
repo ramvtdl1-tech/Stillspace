@@ -3,9 +3,10 @@ import {
   RayInteractable, SRGBColorSpace, Vector3, World,
 } from '@iwsdk/core';
 import { FocusStore, type Snapshot, type Duration } from './state.js';
+import { focusColors } from './focus-colors.js';
 
 type Page = 'focus' | 'tasks' | 'notes' | 'help' | 'keyboard' | 'grove';
-type Tile = { mesh: Mesh; entity: Entity; draw: (label: string, active?: boolean) => void };
+type Tile = { mesh: Mesh; entity: Entity; draw: (label: string, active?: boolean, phase?: Snapshot['phase']) => void };
 
 /** All essential controls live in the immersive scene, including text entry. */
 export class SpatialDesk {
@@ -117,14 +118,18 @@ export class SpatialDesk {
       mesh.addEventListener('pointerout', () => { material.color.set('#ffffff'); });
     }
     let previousText = ''; let previousActive: boolean | undefined;
-    const draw = (text: string, active = false) => {
-      if (text === previousText && active === previousActive) return;
-      previousText = text; previousActive = active;
+    let previousPhase: Snapshot['phase'] | undefined;
+    const draw = (text: string, active = false, phase?: Snapshot['phase']) => {
+      if (text === previousText && active === previousActive && phase === previousPhase) return;
+      previousText = text;
+      previousActive = active;
+      previousPhase = phase;
+      const colors = phase ? focusColors[phase] : undefined;
       const w = canvas.width, h = canvas.height;
       context.clearRect(0, 0, w, h);
-      context.fillStyle = active ? '#ffc38a' : display ? '#202437' : '#343a55';
+      context.fillStyle = active ? colors?.accent ?? '#ffc38a' : colors?.surface ?? (display ? '#202437' : '#343a55');
       context.beginPath(); context.roundRect(0, 0, w, h, Math.min(30, h / 5)); context.fill();
-      context.fillStyle = active ? '#251b2c' : '#f6e9e5';
+      context.fillStyle = active ? '#141725' : colors?.accent ?? '#f6e9e5';
       if (id === 'FocusDisplay') {
         const [title, time, status] = text.split('\n');
         context.textAlign = 'center'; context.textBaseline = 'middle';
@@ -205,11 +210,11 @@ export class SpatialDesk {
     const task = snapshot.tasks.find(t => t.id === snapshot.activeTaskId);
     const sec = Math.ceil(snapshot.remainingMs / 1000);
     const time = `${Math.floor(sec / 60).toString().padStart(2, '0')}:${(sec % 60).toString().padStart(2, '0')}`;
-    this.tiles.get('FocusDisplay')!.draw(`${task?.title ?? 'Choose one small intention'}\n${time}\n${snapshot.phase === 'complete' ? 'A new lantern is lit.' : snapshot.phase === 'paused' ? 'Paused · take your time' : snapshot.phase === 'running' ? 'One thing. One quiet moment.' : 'A fresh start'}`, snapshot.phase === 'complete');
+    this.tiles.get('FocusDisplay')!.draw(`${task?.title ?? 'Choose one small intention'}\n${time}\n${snapshot.phase === 'complete' ? 'A new lantern is lit.' : snapshot.phase === 'paused' ? 'Paused · take your time' : snapshot.phase === 'running' ? 'Focus in progress' : 'Ready to focus'}`, false, snapshot.phase);
     const groveStatus = snapshot.phase === 'complete' ? 'Lantern lit' : snapshot.phase === 'paused' ? 'Focus paused' : snapshot.phase === 'running' ? `${time} remaining` : 'Ready for a focus session';
-    this.tiles.get('GroveDisplay')!.draw(`THE NIGHT GROVE\n${groveStatus} · ${Math.min(12, snapshot.totalSessions)}/12 lanterns`);
+    this.tiles.get('GroveDisplay')!.draw(`THE NIGHT GROVE\n${groveStatus} · ${Math.min(12, snapshot.totalSessions)}/12 lanterns`, false, snapshot.phase);
     [2, 5, 8].forEach(d => this.tiles.get(`Duration${d}`)!.draw(`${d} min`, snapshot.durationMinutes === d));
-    this.tiles.get('XRStart')!.draw(snapshot.phase === 'running' ? 'Pause this moment' : snapshot.phase === 'paused' ? 'Resume this moment' : snapshot.phase === 'complete' ? 'Begin another moment' : 'Begin a little moment', true);
+    this.tiles.get('XRStart')!.draw(snapshot.phase === 'running' ? 'Pause this moment' : snapshot.phase === 'paused' ? 'Resume this moment' : snapshot.phase === 'complete' ? 'Begin another moment' : 'Begin a little moment', true, snapshot.phase);
     this.tiles.get('XRSound')!.draw(snapshot.soundEnabled ? 'Sound on' : 'Sound off');
     if (this.taskOffset >= snapshot.tasks.length) this.taskOffset = 0;
     for (let i = 0; i < 4; i++) {

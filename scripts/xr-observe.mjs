@@ -10,6 +10,7 @@ export default async function ({ page, frame }) {
     const garden = world.requireSceneObject('garden');
     const litStones = Array.from({ length: 12 }, (_, i) => garden.getObjectByName(`PathStone${i + 1}`).material.emissiveIntensity).filter(level => level > 0).length;
     const visibleLanterns = garden.getObjectByName('EarnedLanterns').children.filter(object => object.visible).length;
-    return { litStones, visibleLanterns, remainingMs: snapshot.remainingMs, active: world.renderer.xr.isPresenting, phase: snapshot.phase, tasks: snapshot.tasks.map(t=>t.title), sessions: snapshot.totalSessions, pages: ['focus','tasks','notes','help','keyboard','grove'].filter(name => world.scene.getObjectByName(`Page_${name}`).visible), controls };
+    const trailColor = garden.getObjectByName('PathStone1').material.emissive.getHexString();
+    return { trailColor, litStones, visibleLanterns, remainingMs: snapshot.remainingMs, active: world.renderer.xr.isPresenting, phase: snapshot.phase, tasks: snapshot.tasks.map(t=>t.title), sessions: snapshot.totalSessions, pages: ['focus','tasks','notes','help','keyboard','grove'].filter(name => world.scene.getObjectByName(`Page_${name}`).visible), controls };
   });
 }

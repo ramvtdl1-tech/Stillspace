@@ -1,6 +1,7 @@
 import { createSystem, Group, Mesh, MeshStandardMaterial, VisibilityState, World } from '@iwsdk/core';
 import projectOptions from 'virtual:iwsdk-project';
 import { GardenAudio } from './audio.js';
+import { focusColors } from './focus-colors.js';
 import { createLantern } from './scene-assets/garden.scene-asset.js';
 import { SpatialDesk } from './spatial-desk.js';
 import { FocusStore, type Duration, type Snapshot } from './state.js';
@@ -34,6 +35,12 @@ function performFocusAction() {
 function update(snapshot: Snapshot) {
   if (snapshot.phase === 'running' && previousPhase !== 'running') audio.resume();
   previousPhase = snapshot.phase;
+  if (document.body.dataset.focusPhase !== snapshot.phase) {
+    const colors = focusColors[snapshot.phase];
+    document.body.dataset.focusPhase = snapshot.phase;
+    document.body.style.setProperty('--focus-accent', colors.accent);
+    document.body.style.setProperty('--focus-surface', colors.surface);
+  }
   const storageWarning = $('storage-warning');
   storageWarning.hidden = !snapshot.storageWarning;
   storageWarning.textContent = snapshot.storageWarning ?? '';
@@ -63,7 +70,9 @@ function update(snapshot: Snapshot) {
   $('focus-task').textContent = selected?.title ?? 'Choose an intention to begin.';
   const seconds = Math.ceil(snapshot.remainingMs / 1000);
   $('timer').textContent = `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
-  $('timer-status').textContent = ({ idle: 'A FRESH START', running: 'LET IT GROW', paused: 'TAKE YOUR TIME', complete: 'A MOMENT WELL SPENT' })[snapshot.phase];
+  const statusText = { idle: 'READY TO FOCUS', running: 'FOCUS IN PROGRESS', paused: 'SESSION PAUSED', complete: 'SESSION COMPLETE' }[snapshot.phase];
+  const status = $('timer-status');
+  if (status.textContent !== statusText) status.textContent = statusText;
   $('focus-title').textContent = ({ idle: 'Find your focus', running: 'One thing at a time', paused: 'A little breathing room', complete: 'Something good grew' })[snapshot.phase];
   $('focus-action').replaceChildren();
   const actionLabel = document.createElement('span'); actionLabel.textContent = ({ idle: 'Begin a little moment', running: 'Pause this moment', paused: 'Resume this moment', complete: 'Begin another moment' })[snapshot.phase];
@@ -192,13 +201,13 @@ async function boot() {
       throw new Error('A focus trail stone is missing its material.');
     }
     const material = stone.material.clone();
-    material.emissive.set('#ffae62');
     stone.material = material;
     return material;
   });
   store.subscribe(snapshot => {
     const progress = snapshot.phase === 'idle' ? 0 : 1 - snapshot.remainingMs / (snapshot.durationMinutes * 60_000);
     trail.forEach((material, i) => {
+      material.emissive.set(focusColors[snapshot.phase].accent);
       material.emissiveIntensity = Math.max(0, Math.min(1, progress * trail.length - i)) * 1.1;
     });
     lanterns.forEach((lantern, i) => { lantern.visible = i < snapshot.totalSessions; });

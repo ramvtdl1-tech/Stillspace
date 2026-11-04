@@ -105,3 +105,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .history-item strong, .history-item span, .growth-stat p { color: #c9c4dc; }
 .daily-moment strong, .growth-stat strong { color: #ffc68f; }
 .history-item { border-color: var(--line); }
+
+/* Phase colors are supplied by the same palette used on the spatial controls. */
+.focus-card {
+  border-color: var(--focus-accent, #b9ceff);
+  background: linear-gradient(155deg, var(--focus-surface, #26324e), var(--paper) 58%);
+}
+.focus-card .timer, .focus-card .timer-status { color: var(--focus-accent, #b9ceff); }
+.focus-card .timer-progress { stroke: var(--focus-accent, #b9ceff); }
+.focus-card .focus-action {
+  background: var(--focus-accent, #b9ceff);
+  border-color: var(--focus-accent, #b9ceff);
+  color: #141725;
+}
+.focus-card .focus-action:hover { filter: brightness(1.08); }
