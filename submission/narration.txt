@@ -23,7 +23,7 @@ interrupts, then resume deliberately. There is nothing to catch up with.
 01:25–01:55
 [If elapsed time is removed, show "Time cut — real two-minute session" on screen.]
 [Use the following only over genuine recorded completion.]
-Finish a session and leave a blossom in your garden. The timer records one
+Finish a session and light a lantern in the Night Grove. The timer records one
 completed moment; marking the task done is a separate choice.
 
 01:55–02:20
@@ -32,7 +32,7 @@ and progress stay in this browser. No application account or AI service is neede
 
 02:20–02:45
 Save and exit whenever you need. A running timer pauses, ready for an explicit
-return. One intention. One quiet moment. Stillspace — make room for one thing.
+return. One intention. One quiet moment. Stillspace Afterlight.
 
 EDITOR NOTES
 - Omit any line whose behavior is not shown and verified in the recorded build.

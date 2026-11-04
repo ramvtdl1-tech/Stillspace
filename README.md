@@ -1,8 +1,8 @@
-# Stillspace
+# Stillspace Afterlight
 
-A small place for one thing. Stillspace is a seated, hands-first virtual focus workspace for Meta Quest: choose a task, complete a 2/5/8 minute session, and grow a quiet garden with each completed session.
+Stillspace Afterlight is a seated, hands-first focus workspace for Meta Quest. Choose one intention, follow a trail of lights through a 2, 5, or 8 minute session, and light a lantern in your Night Grove.
 
-This is a deployment-ready source project for the **Productivity / New Experience** competition route. It has not been submitted or published by this setup. Actual Quest hand interaction, comfort, and the competition's minimum **60 fps** remain release gates until measured on a physical headset. See [testing](docs/TESTING.md).
+This project targets **Productivity / New Experience**. The public judge build is available at [Stillspace](https://stillspace-quest-garden-26.cozyebony2.chatgpt.site/). Actual Quest hand interaction, comfort, and the competition's minimum **60 fps** remain release gates until measured on a physical headset. See [testing](docs/TESTING.md).
 
 ## Run locally
 
@@ -31,7 +31,7 @@ Use `preview` after building to inspect the static production output. It is a lo
 - Point and pinch to operate the spatial interface; a custom pinch keyboard supports task entry inside VR.
 - Keep up to **8 tasks**, with **72 characters** per task. Choose a task and a two-, five-, or eight-minute focus interval.
 - Pause/resume intentionally. Losing page/session visibility pauses a running focus session. Reloading or importing a running timer restores it paused.
-- Completed sessions grow the garden, with up to **12 visible blossoms**. History retains the most recent **500 sessions**; the displayed totals and streak are calculated from that retained history.
+- The stepping stones light up as the timer runs. Open **Grove** in VR for a quieter view with the countdown and lantern count. A completed session lights one lantern, with up to **12 visible lanterns**. History retains the most recent **500 sessions**; the displayed totals and streak are calculated from that retained history.
 - Write a reflection note (up to **500 characters**) in VR or the desktop companion. The desktop companion also supports JSON backup export/import and local-data erasure. An import **replaces** the current workspace after validation; export first if you want to keep it.
 - Sound is optional and synthesized. No AI API, account, external content service, or backend is required.
 

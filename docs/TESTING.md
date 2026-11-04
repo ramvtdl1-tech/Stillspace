@@ -1,6 +1,6 @@
 # Validation and Quest test plan
 
-The automated results below were recorded on November 3, 2026 (IST). The physical-device and deployment checklist remains pending until each result is recorded. A production build verifies packaging, not physical headset correctness. **Actual Quest performance, including the competition's minimum 60 fps, is unverified.**
+The table below records the baseline results from November 3, 2026 (IST). The Afterlight verification is listed separately. The physical-device and deployment checklist remains pending until each result is recorded. A production build verifies packaging, not physical headset correctness. **Actual Quest performance, including the competition's minimum 60 fps, is unverified.**
 
 | Recorded validation | Result |
 | --- | --- |
@@ -28,6 +28,12 @@ npx @iwsdk/cli browser run scripts/mobile-smoke.mjs --timeout 15000
 The XR smoke script opens VR through the app button, uses emulated hands, captures `artifacts/immersive.png`, and exits. Choosing headless mode here is an explicit test workflow. Use the headed workflow for interactive development. These results establish emulator behavior only.
 
 XR means the immersive headset session. IWER is IWSDK's browser-based XR emulator. It is useful for iteration and simulated hands, but it does not replace physical Quest validation. See the [official testing guide](https://iwsdk.dev/guides/02-testing-experience.html).
+
+## Afterlight verification
+
+Run `npm run check`, the desktop and mobile smoke scripts, then `node scripts/xr-smoke.mjs --full` from a fresh emulator workspace. The full run uses the app’s pinch controls to enter Grove view and waits for the actual two-minute timer. It checks that the stepping stones light before completion, then verifies twelve lit stones, exactly one new session and one visible lantern in a fresh garden. It saves the real emulator recording under `artifacts/stillspace-afterlight-demo.webm`.
+
+For an on-headset playtest, watch where a first-time user looks for the timer and whether they find the Grove tab without prompting. Record mis-pinches, text readability, and whether the countdown remains visible at the seated angle. Use MQDH and the physical test plan below to measure comfort and frame rate.
 
 ## Record the environment
 

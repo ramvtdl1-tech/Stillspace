@@ -4,7 +4,7 @@ import {
 } from '@iwsdk/core';
 import { FocusStore, type Snapshot, type Duration } from './state.js';
 
-type Page = 'focus' | 'tasks' | 'notes' | 'help' | 'keyboard';
+type Page = 'focus' | 'tasks' | 'notes' | 'help' | 'keyboard' | 'grove';
 type Tile = { mesh: Mesh; entity: Entity; draw: (label: string, active?: boolean) => void };
 
 /** All essential controls live in the immersive scene, including text entry. */
@@ -29,10 +29,11 @@ export class SpatialDesk {
     this.snapshot = store.snapshot;
     this.root.name = 'SpatialDesk'; this.root.visible = false;
     this.anchor = world.createTransformEntity(this.root, { persistent: true });
-    for (const name of ['focus', 'tasks', 'notes', 'help', 'keyboard'] as Page[]) {
+    for (const name of ['focus', 'tasks', 'notes', 'help', 'keyboard', 'grove'] as Page[]) {
       const root = new Group(); root.name = `Page_${name}`;
       this.pages.set(name, { root, entity: world.createTransformEntity(root, this.anchor) });
     }
+    this.tile('GroveDisplay', 'grove', 0, .29, .77, .15, 'THE NIGHT GROVE', undefined, true);
     this.tile('FocusDisplay', 'focus', 0, .20, .88, .31, '', undefined, true);
     [2, 5, 8].forEach((duration, i) => this.tile(`Duration${duration}`, 'focus', -.22 + i * .22, -.015, .20, .065, `${duration} min`, () => {
       if (!store.setDuration(duration as Duration)) this.say('Reset this moment before changing its length.');
@@ -72,8 +73,8 @@ export class SpatialDesk {
     this.tile('NoteNext', 'notes', .34, -.17, .18, .085, 'More →', () => { this.notePage++; this.sync(store.snapshot); });
     this.tile('NotesStats', 'notes', 0, -.30, .88, .10, '', undefined, true);
     this.tile('HelpDisplay', 'help', 0, .12, .94, .50,
-      'WELCOME TO STILLSPACE\nA little room to focus.\n\n1. Sit comfortably. Rest your elbows.\n2. Point your hand at a button.\n3. Pinch thumb and index finger to select.\n\nChoose one intention and a 2, 5 or 8 minute moment.\nFinishing plants a blossom. Your data stays here.', undefined, true);
-    this.tile('XRWelcome', 'help', 0, -.22, .58, .09, 'Enter your garden →', () => this.show('focus'));
+      'STILLSPACE AFTERLIGHT\nMake time glow.\n\n1. Sit comfortably. Rest your elbows.\n2. Point your hand at a button.\n3. Pinch thumb and index finger to select.\n\nChoose one intention and a 2, 5 or 8 minute moment.\nFinish to light a lantern. Use Grove to see the trail.', undefined, true);
+    this.tile('XRWelcome', 'help', 0, -.22, .58, .09, 'Enter the grove →', () => this.show('focus'));
     this.tile('KeyboardDisplay', 'keyboard', 0, .32, .94, .13, '', undefined, true);
     const symbolRows = ['1234567890', '.,!?-/:;@', "'()&+_="];
     ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'].forEach((row, r) => [...row].forEach((key, c) => {
@@ -93,7 +94,8 @@ export class SpatialDesk {
     });
     this.tile('KeyboardHint', 'keyboard', 0, -.31, .94, .065, 'Point and pinch a key. No controllers needed.', undefined, true);
     // Stationary, world-space dock: never attached directly to the viewer's head.
-    ['focus', 'tasks', 'notes', 'help'].forEach((page, i) => this.tile(`Nav_${page}`, null, -.36 + i * .24, -.46, .22, .075, ['Focus', 'Intentions', 'Field notes', 'Help'][i], () => this.show(page as Page)));
+    const tabs = ['focus', 'tasks', 'grove', 'notes', 'help'] as const;
+    tabs.forEach((page, i) => this.tile(`Nav_${page}`, null, -.40 + i * .20, -.46, .18, .075, ['Focus', 'Intentions', 'Grove', 'Field notes', 'Help'][i], () => this.show(page)));
     this.tile('XRRecenter', null, -.32, -.56, .30, .065, 'Recenter', () => this.recenter());
     this.tile('XRSound', null, 0, -.56, .29, .065, 'Sound', onSound);
     this.tile('XRExit', null, .32, -.56, .30, .065, 'Save & exit', () => { store.pause(); this.world.exitXR(); });
@@ -111,7 +113,7 @@ export class SpatialDesk {
     if (action) {
       entity.addComponent(RayInteractable);
       mesh.addEventListener('click', () => { action(); });
-      mesh.addEventListener('pointerover', () => { material.color.set('#dde9ce'); });
+      mesh.addEventListener('pointerover', () => { material.color.set('#f9ccad'); });
       mesh.addEventListener('pointerout', () => { material.color.set('#ffffff'); });
     }
     let previousText = ''; let previousActive: boolean | undefined;
@@ -120,9 +122,9 @@ export class SpatialDesk {
       previousText = text; previousActive = active;
       const w = canvas.width, h = canvas.height;
       context.clearRect(0, 0, w, h);
-      context.fillStyle = active ? '#536b45' : display ? '#f5f6ed' : '#e8eddd';
+      context.fillStyle = active ? '#ffc38a' : display ? '#202437' : '#343a55';
       context.beginPath(); context.roundRect(0, 0, w, h, Math.min(30, h / 5)); context.fill();
-      context.fillStyle = active ? '#f9faf3' : '#4b6240';
+      context.fillStyle = active ? '#251b2c' : '#f6e9e5';
       if (id === 'FocusDisplay') {
         const [title, time, status] = text.split('\n');
         context.textAlign = 'center'; context.textBaseline = 'middle';
@@ -174,10 +176,12 @@ export class SpatialDesk {
     this.message = message; this.tiles.get('XRMessage')!.draw(message); this.tiles.get('TaskMessage')!.draw(message);
   }
   show(page: Page) {
+    const changedGroveView = (this.page === 'grove') !== (page === 'grove');
     this.page = page;
+    if (changedGroveView && this.root.visible) this.placeGarden();
     if (page !== 'keyboard') this.message = '';
     for (const [name, group] of this.pages) group.root.visible = name === page;
-    for (const name of ['focus', 'tasks', 'notes', 'help']) this.tiles.get(`Nav_${name}`)!.draw(name === 'tasks' ? 'Intentions' : name === 'notes' ? 'Field notes' : name[0].toUpperCase() + name.slice(1), page === name);
+    for (const name of ['focus', 'tasks', 'grove', 'notes', 'help']) this.tiles.get(`Nav_${name}`)!.draw(name === 'tasks' ? 'Intentions' : name === 'notes' ? 'Field notes' : name[0].toUpperCase() + name.slice(1), page === name);
   }
   setVisible(visible: boolean) { this.root.visible = visible; if (visible) this.recenter(); }
   recenter() {
@@ -185,9 +189,14 @@ export class SpatialDesk {
     this.world.camera.getWorldDirection(this.forward);
     this.forward.y = 0; this.forward.normalize();
     this.root.position.copy(this.headPosition); this.root.rotation.set(0, Math.atan2(-this.forward.x, -this.forward.z), 0);
+    this.placeGarden();
+  }
+
+  private placeGarden() {
     const garden = this.world.getSceneObject('garden');
     if (garden) {
-      garden.position.set(0, -.79, -1.85).applyAxisAngle(new Vector3(0, 1, 0), this.root.rotation.y).add(this.headPosition);
+      garden.position.set(0, this.page === 'grove' ? -.52 : -.79, -1.85)
+        .applyAxisAngle(new Vector3(0, 1, 0), this.root.rotation.y).add(this.root.position);
       garden.rotation.y = this.root.rotation.y;
     }
   }
@@ -196,7 +205,9 @@ export class SpatialDesk {
     const task = snapshot.tasks.find(t => t.id === snapshot.activeTaskId);
     const sec = Math.ceil(snapshot.remainingMs / 1000);
     const time = `${Math.floor(sec / 60).toString().padStart(2, '0')}:${(sec % 60).toString().padStart(2, '0')}`;
-    this.tiles.get('FocusDisplay')!.draw(`${task?.title ?? 'Choose one small intention'}\n${time}\n${snapshot.phase === 'complete' ? 'A new blossom. A little progress.' : snapshot.phase === 'paused' ? 'Paused · take your time' : snapshot.phase === 'running' ? 'One thing. One quiet moment.' : 'A fresh start'}`, snapshot.phase === 'complete');
+    this.tiles.get('FocusDisplay')!.draw(`${task?.title ?? 'Choose one small intention'}\n${time}\n${snapshot.phase === 'complete' ? 'A new lantern is lit.' : snapshot.phase === 'paused' ? 'Paused · take your time' : snapshot.phase === 'running' ? 'One thing. One quiet moment.' : 'A fresh start'}`, snapshot.phase === 'complete');
+    const groveStatus = snapshot.phase === 'complete' ? 'Lantern lit' : snapshot.phase === 'paused' ? 'Focus paused' : snapshot.phase === 'running' ? `${time} remaining` : 'Ready for a focus session';
+    this.tiles.get('GroveDisplay')!.draw(`THE NIGHT GROVE\n${groveStatus} · ${Math.min(12, snapshot.totalSessions)}/12 lanterns`);
     [2, 5, 8].forEach(d => this.tiles.get(`Duration${d}`)!.draw(`${d} min`, snapshot.durationMinutes === d));
     this.tiles.get('XRStart')!.draw(snapshot.phase === 'running' ? 'Pause this moment' : snapshot.phase === 'paused' ? 'Resume this moment' : snapshot.phase === 'complete' ? 'Begin another moment' : 'Begin a little moment', true);
     this.tiles.get('XRSound')!.draw(snapshot.soundEnabled ? 'Sound on' : 'Sound off');
@@ -207,7 +218,7 @@ export class SpatialDesk {
       this.tiles.get(`DeleteTask${i}`)!.mesh.visible = !!item;
     }
     this.tiles.get('TaskMessage')!.draw(this.message || `${snapshot.tasks.length}/8 intentions · pinch a finished intention to reopen it`);
-    this.tiles.get('XRMessage')!.draw(this.message || (snapshot.phase === 'complete' ? 'Your moment is complete. A new blossom is waiting.' : 'Rest your elbows. Point and pinch to select.'));
+    this.tiles.get('XRMessage')!.draw(this.message || (snapshot.phase === 'complete' ? 'Session complete. Open Grove to see your lantern.' : 'Rest your elbows. Point and pinch to select.'));
     const noteCharacters = Array.from(snapshot.note || 'What became a little clearer today?');
     const notePages = Math.max(1, Math.ceil(noteCharacters.length / 160));
     this.notePage = Math.min(this.notePage, notePages - 1);

@@ -1,7 +1,7 @@
 import {
   BufferGeometry, CatmullRomCurve3, Color, CylinderGeometry, ExtrudeGeometry,
   Float32BufferAttribute, Group, IcosahedronGeometry, LatheGeometry, Mesh,
-  MeshStandardMaterial, Shape, SphereGeometry, Vector2, Vector3,
+  MeshStandardMaterial, Shape, Vector2, Vector3,
 } from '@iwsdk/core';
 
 /** Original miniature. Metres; +Y up, front -Z, plinth contacts y=0. */
@@ -9,15 +9,15 @@ export function createGarden(): Group {
   const garden = new Group();
   garden.name = 'StillspaceGarden';
   const material = (color: string, roughness = 0.85) => new MeshStandardMaterial({ color, roughness });
-  const ceramic = material('#e8e1d1', 0.55);
-  const rim = material('#f8f0df', 0.65);
-  const underside = material('#c1b9a8');
-  const moss = material('#a0af8a');
-  const bark = material('#6c6550');
-  const terracotta = material('#c67c61', 0.7);
-  const limestone = material('#eee4cd');
-  const rockMaterial = material('#96998d');
-  const foliage = ['#7e967b', '#91a58a', '#aab99b', '#b6c3a8'].map((color) => material(color));
+  const ceramic = material('#253052', 0.55);
+  const rim = material('#9e7962', 0.65);
+  const underside = material('#151b30');
+  const moss = material('#596c98');
+  const bark = material('#68516e');
+  const terracotta = material('#c78954', 0.7);
+  const limestone = material('#414d70');
+  const rockMaterial = material('#516287');
+  const foliage = ['#637cc2', '#7d7dc3', '#9c87bf', '#af93cc'].map((color) => material(color));
   const leafShape = new IcosahedronGeometry(1, 2);
   const stoneShape = new IcosahedronGeometry(1, 1);
 
@@ -36,10 +36,10 @@ export function createGarden(): Group {
     [0.65, 0.039], [0.65, 0.071], [0.641, 0.091],
     [0.624, 0.103], [0.6, 0.109], [0, 0.109],
   ].map(([x, y]) => new Vector2(x, y));
-  mesh('TurnedCreamPlinth', new LatheGeometry(profile, 72), ceramic);
+  mesh('MidnightCeramicPlinth', new LatheGeometry(profile, 72), ceramic);
   const foot = mesh('RecessedStoneFoot', new CylinderGeometry(0.565, 0.55, 0.012, 64), underside);
   foot.position.y = 0.006;
-  const lip = mesh('IvoryInsetLip', new CylinderGeometry(0.607, 0.607, 0.009, 72), rim);
+  const lip = mesh('BrassInsetLip', new CylinderGeometry(0.607, 0.607, 0.009, 72), rim);
   lip.position.y = 0.11;
 
   function groundY(x: number, z: number): number {
@@ -52,7 +52,7 @@ export function createGarden(): Group {
 
   const positions: number[] = [0, groundY(0, 0), 0];
   const indices: number[] = [];
-  const centerColor = new Color('#a8b697');
+  const centerColor = new Color('#56658f');
   const colors: number[] = [centerColor.r, centerColor.g, centerColor.b];
   const rings = 16;
   const segments = 72;
@@ -63,7 +63,7 @@ export function createGarden(): Group {
       const x = Math.cos(a) * radius;
       const z = Math.sin(a) * radius;
       positions.push(x, groundY(x, z), z);
-      const tint = new Color('#a8b697').lerp(new Color('#d0d5b9'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
+      const tint = new Color('#56658f').lerp(new Color('#8492bb'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
       colors.push(tint.r, tint.g, tint.b);
       if (segment < segments) {
         const i = 1 + (ring - 1) * (segments + 1) + segment;
@@ -100,7 +100,7 @@ export function createGarden(): Group {
   }
 
   const arch = new Group();
-  arch.name = 'TerracottaPortal';
+  arch.name = 'BrassMoonGate';
   arch.position.set(0.29, groundY(0.29, -0.095), -0.095);
   arch.rotation.y = -0.18;
   garden.add(arch);
@@ -192,23 +192,22 @@ export function createGarden(): Group {
   return garden;
 }
 
-/** A small earned-session keepsake; local contact plane y=0. */
-export function createSprout(): Group {
-  const sprout = new Group();
-  sprout.name = 'SessionSprout';
-  const stemMaterial = new MeshStandardMaterial({ color: '#6e8264', roughness: 0.85 });
-  const leafMaterial = new MeshStandardMaterial({ color: '#9fb991', roughness: 0.8 });
-  const stem = new Mesh(new CylinderGeometry(0.004, 0.006, 0.07, 7), stemMaterial);
-  stem.name = 'SproutStem';
-  stem.position.y = 0.035;
-  sprout.add(stem);
-  [-1, 1].forEach((side) => {
-    const leaf = new Mesh(new SphereGeometry(0.022, 10, 6), leafMaterial);
-    leaf.name = side < 0 ? 'LeftSproutLeaf' : 'RightSproutLeaf';
-    leaf.scale.set(1, 0.35, 0.53);
-    leaf.position.set(side * 0.016, 0.06, 0);
-    leaf.rotation.z = side * 0.42;
-    sprout.add(leaf);
-  });
-  return sprout;
+/** An earned lantern, sitting on the local y=0 surface. */
+export function createLantern(): Group {
+  const lantern = new Group();
+  lantern.name = 'SessionLantern';
+  const bronze = new MeshStandardMaterial({ color: '#986b4a', metalness: .35, roughness: .55 });
+  const glass = new MeshStandardMaterial({ color: '#ffcf7e', emissive: '#ff9d48', emissiveIntensity: 1.2 });
+  const foot = new Mesh(new CylinderGeometry(.024, .031, .014, 8), bronze);
+  foot.name = 'BronzeFoot';
+  foot.position.y = .007;
+  const flame = new Mesh(new IcosahedronGeometry(.026, 0), glass);
+  flame.name = 'AmberGlass';
+  flame.position.y = .044;
+  flame.scale.y = 1.4;
+  const cap = new Mesh(new CylinderGeometry(.008, .026, .016, 8), bronze);
+  cap.name = 'BronzeCap';
+  cap.position.y = .078;
+  lantern.add(foot, flame, cap);
+  return lantern;
 }

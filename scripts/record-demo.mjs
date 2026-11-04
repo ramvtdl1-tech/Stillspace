@@ -116,12 +116,14 @@ export default async function ({ page, frame, workspaceRoot }) {
   });
   const output = path.join(workspaceRoot, 'artifacts');
   await mkdir(output, { recursive: true });
-  const videoPath = path.join(output, 'stillspace-emulator-demo.webm');
+  const name = process.env.STILLSPACE_DEMO_NAME ?? 'stillspace-emulator-demo';
+  if (!/^[a-z0-9-]+$/.test(name)) throw new Error('Invalid recording file name.');
+  const videoPath = path.join(output, `${name}.webm`);
   await writeFile(videoPath, Buffer.from(captured.video, 'base64'));
-  await writeFile(path.join(output, 'stillspace-emulator-demo.json'), `${JSON.stringify(captured.metadata, null, 2)}\n`);
+  await writeFile(path.join(output, `${name}.json`), `${JSON.stringify(captured.metadata, null, 2)}\n`);
   let posterPath = null;
   if (captured.poster) {
-    posterPath = path.join(output, 'stillspace-emulator-demo-poster.jpg');
+    posterPath = path.join(output, `${name}-poster.jpg`);
     await writeFile(posterPath, Buffer.from(captured.poster, 'base64'));
   }
   await app.evaluate(() => { delete window.__stillspaceDemoRecording; });

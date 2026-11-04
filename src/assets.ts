@@ -6,6 +6,6 @@
  */
 
 import { defineAssets } from '@iwsdk/core';
-import { createGarden, createSprout } from './scene-assets/garden.scene-asset.js';
+import { createGarden, createLantern } from './scene-assets/garden.scene-asset.js';
 
-export default defineAssets({ garden: createGarden(), sprout: createSprout() });
+export default defineAssets({ garden: createGarden(), lantern: createLantern() });

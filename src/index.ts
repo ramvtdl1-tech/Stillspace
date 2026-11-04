@@ -1,13 +1,15 @@
-import { createSystem, Group, Vector3, VisibilityState, World } from '@iwsdk/core';
+import { createSystem, Group, Mesh, MeshStandardMaterial, VisibilityState, World } from '@iwsdk/core';
 import projectOptions from 'virtual:iwsdk-project';
 import { GardenAudio } from './audio.js';
-import { createSprout } from './scene-assets/garden.scene-asset.js';
+import { createLantern } from './scene-assets/garden.scene-asset.js';
 import { SpatialDesk } from './spatial-desk.js';
 import { FocusStore, type Duration, type Snapshot } from './state.js';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const store = new FocusStore();
 const audio = new GardenAudio();
+const lanternSlots = Array.from({ length: 12 }, () => document.createElement('span'));
+$('lantern-register').append(...lanternSlots);
 let spatial: SpatialDesk | undefined;
 let toastTimer: ReturnType<typeof setTimeout>;
 let lastPhase = store.snapshot.phase;
@@ -82,13 +84,12 @@ function update(snapshot: Snapshot) {
   $('sound-button').style.opacity = snapshot.soundEnabled ? '1' : '.45';
   if (document.activeElement !== $('journal-note')) ($('journal-note') as HTMLTextAreaElement).value = snapshot.note;
   $('storage-status').textContent = snapshot.storageWarning ?? 'Saved locally. Backups replace the current garden when imported. History retains the most recent 500 sessions.';
-  if (snapshot.totalSessions) {
-    $('garden-title').textContent = `${snapshot.totalSessions} quiet moment${snapshot.totalSessions === 1 ? '' : 's'}. Something is growing.`;
-    $('garden-subtitle').textContent = 'Your garden remembers the time you made for yourself.';
-  } else {
-    $('garden-title').textContent = 'Good things take a little time.';
-    $('garden-subtitle').textContent = 'Every finished session plants a new beginning.';
-  }
+  const visibleLanterns = Math.min(12, snapshot.totalSessions);
+  lanternSlots.forEach((slot, i) => slot.toggleAttribute('data-lit', i < visibleLanterns));
+  $('garden-title').textContent = 'The Night Grove';
+  $('garden-subtitle').textContent = snapshot.totalSessions
+    ? `${visibleLanterns} / 12 lanterns lit · ${snapshot.totalSessions} completed focus sessions`
+    : 'The trail lights as you focus. Your first lantern is waiting.';
   $('session-history').replaceChildren();
   for (const session of snapshot.sessions.slice(-12).reverse()) {
     const row = document.createElement('div'); row.className = 'history-item';
@@ -98,7 +99,7 @@ function update(snapshot: Snapshot) {
   }
   if (!snapshot.sessions.length) $('session-history').textContent = 'Your first little moment is waiting. There’s no hurry.';
   spatial?.sync(snapshot);
-  if (lastPhase !== 'complete' && snapshot.phase === 'complete') { audio.blossom(); toast('A new blossom. A little progress. Well done.'); }
+  if (lastPhase !== 'complete' && snapshot.phase === 'complete') { audio.blossom(); toast('A lantern joins your grove. Focus session complete.'); }
   lastPhase = snapshot.phase;
 }
 
@@ -173,16 +174,35 @@ async function boot() {
   spatial = new SpatialDesk(world, store, toggleSound);
   spatial.sync(store.snapshot);
   const garden = world.requireSceneObject('garden');
-  const rewards = new Group(); rewards.name = 'SessionBlossoms';
+  const rewards = new Group(); rewards.name = 'EarnedLanterns';
   const rewardsEntity = world.createTransformEntity(rewards, world.requireSceneEntity('garden'));
-  const sprouts: Group[] = [];
+  const lanterns: Group[] = [];
   for (let i = 0; i < 12; i++) {
-    const sprout = createSprout(); sprout.name = `Blossom${i + 1}`; sprout.scale.setScalar(.6);
-    const angle = i * Math.PI * 2 / 12;
-    sprout.position.set(Math.cos(angle) * .48, .148, Math.sin(angle) * .48);
-    world.createTransformEntity(sprout, rewardsEntity); sprouts.push(sprout);
+    const lantern = createLantern();
+    lantern.name = `Lantern${i + 1}`;
+    lantern.scale.setScalar(.82);
+    const angle = Math.PI / 2 + i * Math.PI * 2 / 12;
+    lantern.position.set(Math.cos(angle) * .48, .155, Math.sin(angle) * .48);
+    world.createTransformEntity(lantern, rewardsEntity);
+    lanterns.push(lantern);
   }
-  store.subscribe(snapshot => sprouts.forEach((sprout, i) => { sprout.visible = i < snapshot.totalSessions; }));
+  const trail = Array.from({ length: 12 }, (_, i) => {
+    const stone = garden.getObjectByName(`PathStone${i + 1}`);
+    if (!(stone instanceof Mesh) || !(stone.material instanceof MeshStandardMaterial)) {
+      throw new Error('A focus trail stone is missing its material.');
+    }
+    const material = stone.material.clone();
+    material.emissive.set('#ffae62');
+    stone.material = material;
+    return material;
+  });
+  store.subscribe(snapshot => {
+    const progress = snapshot.phase === 'idle' ? 0 : 1 - snapshot.remainingMs / (snapshot.durationMinutes * 60_000);
+    trail.forEach((material, i) => {
+      material.emissiveIntensity = Math.max(0, Math.min(1, progress * trail.length - i)) * 1.1;
+    });
+    lanterns.forEach((lantern, i) => { lantern.visible = i < snapshot.totalSessions; });
+  });
   const initialPosition = garden.position.clone(); const initialRotation = garden.rotation.clone();
   const cameraPosition = world.camera.position.clone(); const cameraRotation = world.camera.quaternion.clone();
   let recenterFrames = 0;
