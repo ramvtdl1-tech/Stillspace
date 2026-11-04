@@ -15,16 +15,16 @@ export default async function ({ page, frame, workspaceRoot }) {
     value => getComputedStyle(document.getElementById('focus-action')).backgroundColor === value,
     expected, { timeout: 2500 },
   );
-  await waitForFocusColor('rgb(185, 206, 255)');
+  await waitForFocusColor('rgb(208, 219, 239)');
   await app.locator('#task-input').fill('Draft one thoughtful page');
   await app.locator('#task-form button').click();
   await app.locator('.task-select').last().click();
   await app.locator('[data-duration="2"]').click();
   await app.locator('#focus-action').click();
   assert.equal(await app.evaluate(() => window.__stillspace.snapshot.phase), 'running');
-  await waitForFocusColor('rgb(255, 197, 140)');
+  await waitForFocusColor('rgb(255, 203, 135)');
   await app.locator('#focus-action').click();
-  await waitForFocusColor('rgb(211, 189, 255)');
+  await waitForFocusColor('rgb(230, 188, 241)');
   const paused = await app.evaluate(() => window.__stillspace.snapshot.remainingMs);
   await page.waitForTimeout(1200);
   assert.equal(await app.evaluate(() => window.__stillspace.snapshot.remainingMs), paused);

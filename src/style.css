@@ -24,29 +24,29 @@ body.xr-active .scene-container{position:fixed;inset:0;width:100vw;height:100vh;
 
 .storage-warning{margin:16px 0 0;padding:13px 17px;border:1px solid #d2b988;border-radius:8px;background:#fbf4df;color:#775d34;font-size:12px;line-height:1.7}.storage-warning[hidden]{display:none}
 
-/* Afterlight: ink, moonstone and warm glass. */
+/* Afterlight surfaces use dusk plum, moonstone and lantern gold. */
 :root {
   color-scheme: dark;
-  color: #f3eeeb;
-  background: #111522;
-  --ink: #f3eeeb;
-  --muted: #b7b9ce;
-  --sage: #f8bd83;
-  --line: #373c55;
-  --paper: #1b2032;
-  --sidebar: #161a29;
+  color: #fff4eb;
+  background: #1c151e;
+  --ink: #fff4eb;
+  --muted: #d4becb;
+  --sage: #ffd096;
+  --line: #604957;
+  --paper: #2b202c;
+  --sidebar: #221923;
 }
-body { background: radial-gradient(ellipse at 62% -20%, #292343 0%, #111522 58%); }
+body { background: radial-gradient(ellipse at 62% -20%, #44303e 0%, #1c151e 58%); }
 .sidebar, .topbar, .page-footer { border-color: var(--line); }
 .sidebar-caption, .sidebar-footer, .quiet-status, .eyebrow, .card-index,
-.entry-caption, .page-footer, .garden-coordinate { color: #b4b7d3; font-size: 9px; }
-.brand-mark { fill: #ffc688; stroke: #ffc688; }
+.entry-caption, .page-footer, .garden-coordinate { color: #d6bacb; font-size: 9px; }
+.brand-mark { fill: #ffd096; stroke: #ffd096; }
 .brand-dot, .tiny-sun, .small-leaf, .daily-icon, .welcome-row h1 em,
-.subpage-header h1 em, .app-dialog h2 em { color: #ffbd82; }
+.subpage-header h1 em, .app-dialog h2 em { color: #ffc78f; }
 .nav-item, .sidebar-settings, .quiet-button, .text-button, .scene-button,
-.help-icon, .hands-hint { color: #d2d3e8; }
-.nav-item.active, .nav-item:hover { background: #2e3049; color: #ffca93; }
-.nav-dot, .status-dot { background: #ffc583; box-shadow: 0 0 10px #ffb56a60; }
+.help-icon, .hands-hint { color: #efdae6; }
+.nav-item.active, .nav-item:hover { background: #483342; color: #ffca93; }
+.nav-dot, .status-dot { background: #ffcb87; box-shadow: 0 0 10px #ffb56a60; }
 .little-ritual, .paper-card, .daily-strip, .note-aside, .app-dialog, .dialog-note,
 .task-form, .note-card textarea, .task-row, .task-item, .count-chip {
   background: var(--paper);
@@ -58,33 +58,33 @@ body { background: radial-gradient(ellipse at 62% -20%, #292343 0%, #111522 58%)
 .welcome-row h1 { letter-spacing: -.055em; }
 .welcome-copy, .card-description, .focus-task, .focus-footnote, .task-card-footer,
 .daily-moment p, .note-footer, .history-footnote, .dialog-intro, .help-steps p,
-.data-setting p, .storage-status, .muted, .empty-state { color: #c4c5db; }
-.button-dark, .button-dark:hover { color: #231522; background: #ffc68f; border-color: #ffc68f; }
+.data-setting p, .storage-status, .muted, .empty-state { color: #e3cdd9; }
+.button-dark, .button-dark:hover { color: #231522; background: #ffcb87; border-color: #ffcb87; }
 .button-dark:hover { background: #ffdbb1; }
 .button-outline, .help-icon, .scene-button, .topbar-divider { border-color: var(--line); }
-.scene-button, .help-icon, .button-outline { background: #252a41; color: #eee8ed; }
+.scene-button, .help-icon, .button-outline { background: #382936; color: #eee8ed; }
 .task-row.selected, .task-item.selected, .task-row.is-selected {
-  border-color: #c08d73; background: #332b3c;
+  border-color: #c08d73; background: #4b3340;
 }
-.task-check, .add-task { color: #ffd09f; border-color: #847287; background: #25283f; }
-.selected .task-check { background: #ffc68f; color: #2b202f; }
-.task-form input, .note-card textarea { color: #f3eeeb; background: transparent; }
-.task-form input::placeholder, .note-card textarea::placeholder { color: #b7b9ce; }
+.task-check, .add-task { color: #ffd09f; border-color: #847287; background: #362835; }
+.selected .task-check { background: #ffcb87; color: #2b202f; }
+.task-form input, .note-card textarea { color: #fff4eb; background: transparent; }
+.task-form input::placeholder, .note-card textarea::placeholder { color: #d4becb; }
 .task-remove, .destructive-button { color: #ffbcaf; }
-.durations button { color: #d0cce5; background: #242943; border-color: #424865; }
+.durations button { color: #ecd4e3; background: #3b2b39; border-color: #6a4c60; }
 .durations button.selected, .durations button[aria-pressed=true] { background: #463648; color: #ffd09f; border-color: #c08d73; }
 .timer { color: #ffe4c8; }
-.timer-track { stroke: #414766; }
+.timer-track { stroke: #604b60; }
 .timer-progress { stroke: #ffc185; }
 .timer-status { color: #e5b693; }
-.garden-card { border-color: #444764; background: #171b2d; }
+.garden-card { border-color: #6d5260; background: #251a29; }
 .garden-heading h2 { color: #fff0e1; }
-.garden-caption p { color: #d2c9df; }
-.garden-caption-line { background: #ffc583; }
+.garden-caption p { color: #e6ceda; }
+.garden-caption-line { background: #ffcb87; }
 .lantern-register { display: flex; justify-content: center; gap: 9px; margin: 0 0 15px; }
 .lantern-register span { width: 6px; height: 6px; transform: rotate(45deg); border: 1px solid #9e91ac; }
-.lantern-register span[data-lit] { background: #ffc583; border-color: #ffc583; box-shadow: 0 0 8px #ffac67; }
-.toast { background: #372b40; color: #fff1e1; border-color: #7c647e; }
+.lantern-register span[data-lit] { background: #ffcb87; border-color: #ffcb87; box-shadow: 0 0 8px #ffac67; }
+.toast { background: #49323e; color: #fff1e1; border-color: #7c647e; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline-color: #ffd19c; }
 @media (min-width: 1100px) {
   .workspace-grid { grid-template-columns: minmax(0, 1.52fr) minmax(290px, 1fr); gap: 16px; }
@@ -99,26 +99,43 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .garden-heading h2 { font-size: clamp(27px, 3vw, 49px); }
 }
 
-.task-copy, .task-title { color: #e1dbef; font-size: 12px; }
-.task-row.done .task-title, .task-row.is-done .task-title { color: #b8b4cf; }
+.task-copy, .task-title { color: #f7e3eb; font-size: 12px; }
+.task-row.done .task-title, .task-row.is-done .task-title { color: #d5bcca; }
 .little-ritual p, .note-aside p, .note-aside p em,
-.history-item strong, .history-item span, .growth-stat p { color: #c9c4dc; }
-.daily-moment strong, .growth-stat strong { color: #ffc68f; }
+.history-item strong, .history-item span, .growth-stat p { color: #e4ccd9; }
+.daily-moment strong, .growth-stat strong { color: #ffcb87; }
 .history-item { border-color: var(--line); }
 
 /* Phase colors are supplied by the same palette used on the spatial controls. */
 .focus-card {
-  border-color: var(--focus-accent, #b9ceff);
-  background: linear-gradient(155deg, var(--focus-surface, #26324e), var(--paper) 58%);
+  border-color: var(--focus-accent, #d0dbef);
+  background: linear-gradient(155deg, var(--focus-surface, #392d43), var(--paper) 58%);
 }
-.focus-card .timer, .focus-card .timer-status { color: var(--focus-accent, #b9ceff); }
-.focus-card .timer-progress { stroke: var(--focus-accent, #b9ceff); }
+.focus-card .timer, .focus-card .timer-status { color: var(--focus-accent, #d0dbef); }
+.focus-card .timer-progress { stroke: var(--focus-accent, #d0dbef); }
 .focus-card .focus-action {
-  background: var(--focus-accent, #b9ceff);
-  border-color: var(--focus-accent, #b9ceff);
-  color: #141725;
+  background: var(--focus-accent, #d0dbef);
+  border-color: var(--focus-accent, #d0dbef);
+  color: #231924;
 }
 .focus-card .focus-action:hover:not(:disabled) {
-  background: var(--focus-accent, #b9ceff);
+  background: var(--focus-accent, #d0dbef);
   filter: brightness(1.08);
+}
+
+/* Match controls whose hover or selected state still used the earlier palette. */
+.scene-loading { background: #251a29; color: #f0d5e1; }
+.loading-seed { background: #ffcb87; }
+.garden-heading .eyebrow { color: #dfbfd0; }
+.scene-button:hover { background: #543c4c; }
+.durations button:hover:not(:disabled) { background: #553b4e; }
+.text-button:hover { color: #ffd7a5; }
+.task-form:focus-within { border-color: #ffcb87; }
+.task-row.selected .task-check,
+.task-row.is-selected .task-check,
+.task-row.done .task-check {
+  border-color: #ffcb87;
+  background: #ffcb87;
+  color: #231924;
+  box-shadow: none;
 }

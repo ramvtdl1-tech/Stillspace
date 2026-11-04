@@ -9,15 +9,15 @@ export function createGarden(): Group {
   const garden = new Group();
   garden.name = 'StillspaceGarden';
   const material = (color: string, roughness = 0.85) => new MeshStandardMaterial({ color, roughness });
-  const ceramic = material('#253052', 0.55);
+  const ceramic = material('#433147', 0.55);
   const rim = material('#9e7962', 0.65);
-  const underside = material('#151b30');
-  const moss = material('#596c98');
-  const bark = material('#68516e');
-  const terracotta = material('#c78954', 0.7);
-  const limestone = material('#414d70');
-  const rockMaterial = material('#516287');
-  const foliage = ['#637cc2', '#7d7dc3', '#9c87bf', '#af93cc'].map((color) => material(color));
+  const underside = material('#2e2133');
+  const moss = material('#886981');
+  const bark = material('#795465');
+  const terracotta = material('#d39765', 0.7);
+  const limestone = material('#6c536b');
+  const rockMaterial = material('#765b74');
+  const foliage = ['#9d7caa', '#b38ab8', '#c397c5', '#d2acd0'].map((color) => material(color));
   const leafShape = new IcosahedronGeometry(1, 2);
   const stoneShape = new IcosahedronGeometry(1, 1);
 
@@ -52,7 +52,7 @@ export function createGarden(): Group {
 
   const positions: number[] = [0, groundY(0, 0), 0];
   const indices: number[] = [];
-  const centerColor = new Color('#56658f');
+  const centerColor = new Color('#75536d');
   const colors: number[] = [centerColor.r, centerColor.g, centerColor.b];
   const rings = 16;
   const segments = 72;
@@ -63,7 +63,7 @@ export function createGarden(): Group {
       const x = Math.cos(a) * radius;
       const z = Math.sin(a) * radius;
       positions.push(x, groundY(x, z), z);
-      const tint = new Color('#56658f').lerp(new Color('#8492bb'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
+      const tint = new Color('#75536d').lerp(new Color('#a27891'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
       colors.push(tint.r, tint.g, tint.b);
       if (segment < segments) {
         const i = 1 + (ring - 1) * (segments + 1) + segment;

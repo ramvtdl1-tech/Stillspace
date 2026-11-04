@@ -4,42 +4,42 @@
   "components": {
     "com.iwsdk.components.DomeGradient": {
       "sky": [
-        0.024,
-        0.034,
-        0.081,
+        0.049,
+        0.028,
+        0.063,
         1
       ],
       "equator": [
-        0.066,
-        0.073,
-        0.147,
+        0.109,
+        0.055,
+        0.093,
         1
       ],
       "ground": [
-        0.028,
-        0.033,
-        0.072,
+        0.041,
+        0.023,
+        0.048,
         1
       ],
       "dither": true
     },
     "com.iwsdk.components.IBLGradient": {
       "sky": [
-        0.45,
-        0.53,
-        0.84,
+        0.58,
+        0.48,
+        0.71,
         1
       ],
       "equator": [
-        0.36,
-        0.32,
-        0.6,
+        0.55,
+        0.37,
+        0.46,
         1
       ],
       "ground": [
-        0.18,
+        0.26,
         0.16,
-        0.29,
+        0.21,
         1
       ],
       "intensity": 0.68
@@ -104,9 +104,9 @@
       "components": {
         "DirectionalLight": {
           "color": [
-            0.78,
-            0.82,
             1,
+            0.83,
+            0.88,
             1
           ],
           "intensity": 2.3,
@@ -119,15 +119,15 @@
       "components": {
         "HemisphereLight": {
           "skyColor": [
+            0.86,
             0.79,
-            0.77,
             1,
             1
           ],
           "groundColor": [
-            0.36,
-            0.24,
-            0.36,
+            0.46,
+            0.28,
+            0.35,
             1
           ],
           "intensity": 1.35

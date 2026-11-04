@@ -114,7 +114,7 @@ export class SpatialDesk {
     if (action) {
       entity.addComponent(RayInteractable);
       mesh.addEventListener('click', () => { action(); });
-      mesh.addEventListener('pointerover', () => { material.color.set('#f9ccad'); });
+      mesh.addEventListener('pointerover', () => { material.color.set('#ffe0cc'); });
       mesh.addEventListener('pointerout', () => { material.color.set('#ffffff'); });
     }
     let previousText = ''; let previousActive: boolean | undefined;
@@ -127,9 +127,9 @@ export class SpatialDesk {
       const colors = phase ? focusColors[phase] : undefined;
       const w = canvas.width, h = canvas.height;
       context.clearRect(0, 0, w, h);
-      context.fillStyle = active ? colors?.accent ?? '#ffc38a' : colors?.surface ?? (display ? '#202437' : '#343a55');
+      context.fillStyle = active ? colors?.accent ?? '#ffcb87' : colors?.surface ?? (display ? '#302334' : '#4b354b');
       context.beginPath(); context.roundRect(0, 0, w, h, Math.min(30, h / 5)); context.fill();
-      context.fillStyle = active ? '#141725' : colors?.accent ?? '#f6e9e5';
+      context.fillStyle = active ? '#231924' : colors?.accent ?? '#fff0e7';
       if (id === 'FocusDisplay') {
         const [title, time, status] = text.split('\n');
         context.textAlign = 'center'; context.textBaseline = 'middle';
