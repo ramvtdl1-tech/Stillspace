@@ -118,4 +118,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   border-color: var(--focus-accent, #b9ceff);
   color: #141725;
 }
-.focus-card .focus-action:hover { filter: brightness(1.08); }
+.focus-card .focus-action:hover:not(:disabled) {
+  background: var(--focus-accent, #b9ceff);
+  filter: brightness(1.08);
+}
