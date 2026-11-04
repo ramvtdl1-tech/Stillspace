@@ -207,7 +207,7 @@ async function boot() {
   store.subscribe(snapshot => {
     const progress = snapshot.phase === 'idle' ? 0 : 1 - snapshot.remainingMs / (snapshot.durationMinutes * 60_000);
     trail.forEach((material, i) => {
-      material.emissive.set(focusColors[snapshot.phase].accent);
+      material.emissive.set(focusColors[snapshot.phase].glow);
       material.emissiveIntensity = Math.max(0, Math.min(1, progress * trail.length - i)) * 1.1;
     });
     lanterns.forEach((lantern, i) => { lantern.visible = i < snapshot.totalSessions; });

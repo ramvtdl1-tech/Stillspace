@@ -24,11 +24,11 @@ if (full) record('start');
 if (observe().pages.includes('help')) click('XRWelcome');
 assert.deepEqual(observe().pages,['focus']);
 click('XRStart'); assert.equal(observe().phase,'running');
-assert.equal(observe().trailColor, 'ffcb87');
+assert.equal(observe().trailColor, 'ffae62');
 click('XRStart'); assert.equal(observe().phase,'paused');
-assert.equal(observe().trailColor, 'e6bcf1');
+assert.equal(observe().trailColor, 'c6a0f0');
 click('XRReset'); assert.equal(observe().phase,'idle');
-assert.equal(observe().trailColor, 'd0dbef');
+assert.equal(observe().trailColor, 'a3ba83');
 click('Nav_tasks'); assert.deepEqual(observe().pages,['tasks']);
 click('XRAddTask'); assert.deepEqual(observe().pages,['keyboard']);
 click('Key_q'); click('KeySave');
@@ -54,7 +54,7 @@ if (full) {
   }
   const completed = observe();
   assert.equal(completed.phase, 'complete');
-  assert.equal(completed.trailColor, 'b4e4c8');
+  assert.equal(completed.trailColor, '80cbaa');
   assert.equal(completed.sessions, initial.sessions + 1);
   assert.equal(completed.visibleLanterns, Math.min(12, completed.sessions));
   assert.equal(completed.litStones, 12);

@@ -9,15 +9,15 @@ export function createGarden(): Group {
   const garden = new Group();
   garden.name = 'StillspaceGarden';
   const material = (color: string, roughness = 0.85) => new MeshStandardMaterial({ color, roughness });
-  const ceramic = material('#433147', 0.55);
-  const rim = material('#9e7962', 0.65);
-  const underside = material('#2e2133');
-  const moss = material('#886981');
-  const bark = material('#795465');
-  const terracotta = material('#d39765', 0.7);
-  const limestone = material('#6c536b');
-  const rockMaterial = material('#765b74');
-  const foliage = ['#9d7caa', '#b38ab8', '#c397c5', '#d2acd0'].map((color) => material(color));
+  const ceramic = material('#e8e1d1', 0.55);
+  const rim = material('#f8f0df', 0.65);
+  const underside = material('#c1b9a8');
+  const moss = material('#a0af8a');
+  const bark = material('#6c6550');
+  const terracotta = material('#c67c61', 0.7);
+  const limestone = material('#eee4cd');
+  const rockMaterial = material('#96998d');
+  const foliage = ['#7e967b', '#91a58a', '#aab99b', '#b6c3a8'].map((color) => material(color));
   const leafShape = new IcosahedronGeometry(1, 2);
   const stoneShape = new IcosahedronGeometry(1, 1);
 
@@ -36,10 +36,10 @@ export function createGarden(): Group {
     [0.65, 0.039], [0.65, 0.071], [0.641, 0.091],
     [0.624, 0.103], [0.6, 0.109], [0, 0.109],
   ].map(([x, y]) => new Vector2(x, y));
-  mesh('MidnightCeramicPlinth', new LatheGeometry(profile, 72), ceramic);
+  mesh('TurnedCreamPlinth', new LatheGeometry(profile, 72), ceramic);
   const foot = mesh('RecessedStoneFoot', new CylinderGeometry(0.565, 0.55, 0.012, 64), underside);
   foot.position.y = 0.006;
-  const lip = mesh('BrassInsetLip', new CylinderGeometry(0.607, 0.607, 0.009, 72), rim);
+  const lip = mesh('IvoryInsetLip', new CylinderGeometry(0.607, 0.607, 0.009, 72), rim);
   lip.position.y = 0.11;
 
   function groundY(x: number, z: number): number {
@@ -52,7 +52,7 @@ export function createGarden(): Group {
 
   const positions: number[] = [0, groundY(0, 0), 0];
   const indices: number[] = [];
-  const centerColor = new Color('#75536d');
+  const centerColor = new Color('#a8b697');
   const colors: number[] = [centerColor.r, centerColor.g, centerColor.b];
   const rings = 16;
   const segments = 72;
@@ -63,7 +63,7 @@ export function createGarden(): Group {
       const x = Math.cos(a) * radius;
       const z = Math.sin(a) * radius;
       positions.push(x, groundY(x, z), z);
-      const tint = new Color('#75536d').lerp(new Color('#a27891'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
+      const tint = new Color('#a8b697').lerp(new Color('#d0d5b9'), (Math.sin(x * 7 + z * 4) + 1) * 0.13);
       colors.push(tint.r, tint.g, tint.b);
       if (segment < segments) {
         const i = 1 + (ring - 1) * (segments + 1) + segment;
@@ -100,7 +100,7 @@ export function createGarden(): Group {
   }
 
   const arch = new Group();
-  arch.name = 'BrassMoonGate';
+  arch.name = 'TerracottaPortal';
   arch.position.set(0.29, groundY(0.29, -0.095), -0.095);
   arch.rotation.y = -0.18;
   garden.add(arch);
