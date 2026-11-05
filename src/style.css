@@ -61,3 +61,14 @@ body.xr-active .scene-container{position:fixed;inset:0;width:100vw;height:100vh;
   background: var(--focus-accent, #4b5d3d);
   filter: brightness(.92);
 }
+.vr-access-link {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+}

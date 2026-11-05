@@ -21,6 +21,12 @@ function toast(message: string) {
   $('toast').textContent = message; $('toast').classList.add('toast-visible');
   clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('toast-visible'), 4500);
 }
+function showVRGuide(message = 'Open this address directly in Meta Quest Browser to enter VR. On a laptop, use the focus desk here or the IWSDK emulator for VR testing.') {
+  $('vr-access-message').textContent = message;
+  ($('vr-access-link') as HTMLInputElement).value = window.location.href;
+  const dialog = $('vr-access-dialog') as HTMLDialogElement;
+  if (!dialog.open) dialog.showModal();
+}
 function toggleSound() {
   const enabled = !store.snapshot.soundEnabled;
   store.setSoundEnabled(enabled); void audio.setEnabled(enabled);
@@ -144,6 +150,16 @@ document.querySelectorAll<HTMLElement>('[data-view]').forEach(button => button.a
 $('journal-note').addEventListener('input', () => store.setNote(($('journal-note') as HTMLTextAreaElement).value));
 for (const id of ['help-button', 'hands-help']) $(id).addEventListener('click', () => ($('help-dialog') as HTMLDialogElement).showModal());
 $('settings-button').addEventListener('click', () => ($('settings-dialog') as HTMLDialogElement).showModal());
+$('copy-vr-link').addEventListener('click', async () => {
+  const link = $('vr-access-link') as HTMLInputElement;
+  try {
+    await navigator.clipboard.writeText(link.value);
+    toast('App link copied. Open it in Meta Quest Browser.');
+  } catch {
+    link.focus(); link.select();
+    toast('The app address is selected. Copy it from the address field.');
+  }
+});
 document.querySelectorAll<HTMLElement>('[data-close]').forEach(button => button.addEventListener('click', () => button.closest('dialog')?.close()));
 $('sound-button').addEventListener('click', toggleSound);
 $('export-data').addEventListener('click', () => {
@@ -234,13 +250,23 @@ async function boot() {
   }
   world.registerSystem(ComfortSystem);
   $('scene-loading').hidden = true;
-  const xrSupported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr').catch(() => false);
-  const enter = $('enter-vr') as HTMLButtonElement; enter.disabled = false;
-  $('vr-label').textContent = xrSupported ? 'Enter your space in VR' : 'Open on a VR headset';
+  let xrSupported = false;
+  const enter = $('enter-vr') as HTMLButtonElement;
+  const refreshVRSupport = async () => {
+    xrSupported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr').catch(() => false);
+    enter.disabled = false;
+    if (!world.renderer.xr.isPresenting) $('vr-label').textContent = xrSupported ? 'Enter your space in VR' : 'How to enter VR';
+  };
+  await refreshVRSupport();
+  navigator.xr?.addEventListener('devicechange', refreshVRSupport);
+  import.meta.hot?.dispose(() => navigator.xr?.removeEventListener('devicechange', refreshVRSupport));
   enter.addEventListener('click', () => {
-    if (!xrSupported) { toast('Desktop preview · open this HTTPS address in your Quest Browser, then select Enter VR.'); return; }
+    if (!xrSupported) { showVRGuide(); return; }
+    if (world.renderer.xr.isPresenting) return;
     ($('help-dialog') as HTMLDialogElement).close(); ($('settings-dialog') as HTMLDialogElement).close();
-    world.launchXR(); toast('Approve the immersive session in your headset.');
+    ($('vr-access-dialog') as HTMLDialogElement).close();
+    world.launchXR();
+    toast('Approve the immersive session in your headset.');
   });
   $('recenter').addEventListener('click', () => {
     if (world.renderer.xr.isPresenting) spatial!.recenter();
