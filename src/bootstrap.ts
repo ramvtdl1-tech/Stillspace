@@ -17,7 +17,8 @@ if (requested) {
       ]);
       const device = new XRDevice(metaQuest3);
       device.primaryInputMode = 'hand';
-      device.installRuntime();
+      device.installRuntime({ forceInstall: true });
+      if (!await navigator.xr?.isSessionSupported('immersive-vr')) throw new Error('The emulated VR session is unavailable.');
       device.installDevUI(DevUI);
       document.body.dataset.emulation = 'ready';
       status.textContent = 'Laptop VR preview · simulated hands';
