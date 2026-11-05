@@ -19,10 +19,12 @@
     "prebuild": "node scripts/generate-notices.mjs --strict"
   },
   "dependencies": {
+    "@iwer/devui": "2.7.0",
     "@iwsdk/core": "1.1.0-rc.2",
     "@pmndrs/uikit": "^1.0.74",
     "@pmndrs/uikit-horizon": "^1.0.74",
     "@pmndrs/uikit-lucide": "^1.0.74",
+    "iwer": "2.7.0",
     "three": "npm:super-three@0.185.0"
   },
   "devDependencies": {

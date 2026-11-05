@@ -9,6 +9,10 @@ import { FocusStore, type Duration, type Snapshot } from './state.js';
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const store = new FocusStore();
 const audio = new GardenAudio();
+const emulating = document.body.dataset.emulation === 'ready';
+const laptopPreviewURL = new URL(window.location.href);
+laptopPreviewURL.searchParams.set('emulate', '1');
+($('laptop-preview-link') as HTMLAnchorElement).href = laptopPreviewURL.href;
 const lanternSlots = Array.from({ length: 12 }, () => document.createElement('span'));
 $('lantern-register').append(...lanternSlots);
 let spatial: SpatialDesk | undefined;
@@ -21,7 +25,7 @@ function toast(message: string) {
   $('toast').textContent = message; $('toast').classList.add('toast-visible');
   clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('toast-visible'), 4500);
 }
-function showVRGuide(message = 'Open this address directly in Meta Quest Browser to enter VR. On a laptop, use the focus desk here or the IWSDK emulator for VR testing.') {
+function showVRGuide(message = 'Open this address directly in Meta Quest Browser to enter VR, or launch the laptop preview below.') {
   $('vr-access-message').textContent = message;
   ($('vr-access-link') as HTMLInputElement).value = window.location.href;
   const dialog = $('vr-access-dialog') as HTMLDialogElement;
@@ -233,12 +237,12 @@ async function boot() {
   let recenterFrames = 0;
   const onStart = () => {
     store.pause(); document.body.classList.add('xr-active'); spatial!.setVisible(true); recenterFrames = 3;
-    $('vr-label').textContent = 'You’re in your space'; void audio.setEnabled(store.snapshot.soundEnabled);
+    $('vr-label').textContent = emulating ? 'Laptop VR preview' : 'You’re in your space'; void audio.setEnabled(store.snapshot.soundEnabled);
   };
   const onEnd = () => {
     store.pause(); audio.suspend(); spatial!.setVisible(false); document.body.classList.remove('xr-active');
     garden.position.copy(initialPosition); garden.rotation.copy(initialRotation);
-    $('vr-label').textContent = 'Enter your space in VR';
+    $('vr-label').textContent = emulating ? 'Enter laptop VR preview' : 'Enter your space in VR';
   };
   world.renderer.xr.addEventListener('sessionstart', onStart);
   world.renderer.xr.addEventListener('sessionend', onEnd);
@@ -255,18 +259,22 @@ async function boot() {
   const refreshVRSupport = async () => {
     xrSupported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr').catch(() => false);
     enter.disabled = false;
-    if (!world.renderer.xr.isPresenting) $('vr-label').textContent = xrSupported ? 'Enter your space in VR' : 'How to enter VR';
+    if (!world.renderer.xr.isPresenting) $('vr-label').textContent = xrSupported ? (emulating ? 'Enter laptop VR preview' : 'Enter your space in VR') : 'Try laptop VR';
   };
   await refreshVRSupport();
   navigator.xr?.addEventListener('devicechange', refreshVRSupport);
   import.meta.hot?.dispose(() => navigator.xr?.removeEventListener('devicechange', refreshVRSupport));
   enter.addEventListener('click', () => {
-    if (!xrSupported) { showVRGuide(); return; }
+    if (!xrSupported) {
+      if (document.body.dataset.emulation === 'failed') showVRGuide('The laptop preview could not load. Use the preview link below to retry, or open this app in Meta Quest Browser.');
+      else window.location.assign(laptopPreviewURL.href);
+      return;
+    }
     if (world.renderer.xr.isPresenting) return;
     ($('help-dialog') as HTMLDialogElement).close(); ($('settings-dialog') as HTMLDialogElement).close();
     ($('vr-access-dialog') as HTMLDialogElement).close();
     world.launchXR();
-    toast('Approve the immersive session in your headset.');
+    toast(emulating ? 'Opening the laptop VR preview.' : 'Approve the immersive session in your headset.');
   });
   $('recenter').addEventListener('click', () => {
     if (world.renderer.xr.isPresenting) spatial!.recenter();
@@ -284,6 +292,7 @@ async function boot() {
       if (now - since > 1000) { label.textContent = `${Math.round(frames * 1000 / (now - since))} fps · ${world.renderer.info.render.calls} draws · ${world.renderer.info.render.triangles} triangles (XR sample)`; frames = 0; since = now; }
     });
   }
+  if (emulating) world.launchXR();
 }
 if (import.meta.hot) import.meta.hot.dispose(() => clearInterval(interval));
 boot().catch(error => {
