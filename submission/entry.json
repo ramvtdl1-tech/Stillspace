@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": {
-    "title": "Stillspace Afterlight \u2014 a night garden for focus",
+    "title": "Stillspace Afterlight — a night garden for focus",
     "tagline": "Choose one intention, follow the lit trail, and leave a lantern behind in a seated hands-first night garden.",
     "track": "Productivity",
     "proposed_division": "New Experience",
@@ -31,8 +31,8 @@
       "multiplayer",
       "Meta VR Glasses compatibility"
     ],
-    "proposed_wider_launch_date": "2026-11-17",
-    "launch_status": "Proposed; subject to physical Quest validation and release review"
+    "proposed_wider_launch_date": null,
+    "launch_status": "Hosted preview available; final production release remains subject to release checks and competition submission."
   },
   "contest": {
     "name": "Meta VR Start Developer Competition 2026",
@@ -43,7 +43,7 @@
     "freeze_after_deadline": true
   },
   "links": {
-    "application_https_url": "https://stillspace-quest-garden-26.cozyebony2.chatgpt.site/",
+    "application_https_url": "https://stillspace-blue.vercel.app/",
     "application_access_tested_signed_out": null,
     "public_youtube_or_vimeo_url": null,
     "video_access_tested_signed_out": null,
@@ -67,7 +67,7 @@
     "release_deployment_version": null,
     "release_artifact_sha256": null,
     "local_demo_video_file": null,
-    "demo_footage_type": null,
+    "demo_footage_type": "Laptop XR preview with simulated hands; user reports core interaction sequence passed. This is emulator evidence, not physical Quest validation.",
     "demo_duration_seconds": null,
     "screenshots": [],
     "physical_quest": {
@@ -91,9 +91,9 @@
     "receipt_retained": null,
     "pending_external_steps": [
       "Entrant eligibility, Start membership, and developer access confirmation",
-      "Final free HTTPS judge link and access test",
-      "Physical Quest interaction, comfort, and frame-rate validation",
-      "Public YouTube or Vimeo actual-footage demonstration link",
+      "Final free HTTPS judge link and signed-out access test",
+      "Physical Quest validation if available; do not claim 60 fps without measurement",
+      "Public YouTube or Vimeo demonstration under three minutes showing the actual XR emulator or Quest experience",
       "Entrant review and Devpost submission before the deadline"
     ]
   }

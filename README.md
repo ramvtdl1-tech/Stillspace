@@ -2,7 +2,7 @@
 
 Stillspace Afterlight is a seated, hands-first focus workspace for Meta Quest. Choose one intention, follow a trail of lights through a 2, 5, or 8 minute session, and light a lantern in your Night Grove.
 
-This project targets **Productivity / New Experience**. The public judge build is available at [Stillspace](https://stillspace-quest-garden-26.cozyebony2.chatgpt.site/). Actual Quest hand interaction, comfort, and the competition's minimum **60 fps** remain release gates until measured on a physical headset. See [testing](docs/TESTING.md).
+This project targets **Productivity / New Experience**. The public judge build is available at [Stillspace](https://stillspace-blue.vercel.app/). Actual Quest hand interaction, comfort, and the competition's minimum **60 fps** remain release gates until measured on a physical headset. See [testing](docs/TESTING.md).
 
 ## Run locally
 

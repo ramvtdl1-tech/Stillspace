@@ -29,6 +29,10 @@ The XR smoke script opens VR through the app button, uses emulated hands, captur
 
 XR means the immersive headset session. IWER is IWSDK's browser-based XR emulator. It is useful for iteration and simulated hands, but it does not replace physical Quest validation. See the [official testing guide](https://iwsdk.dev/guides/02-testing-experience.html).
 
+## User-reported laptop XR preview verification (November 18, 2026)
+
+The entrant reported that the following workflow worked in the hosted laptop VR preview at `https://stillspace-blue.vercel.app/?emulate=1`: simulated left/right hands, pinch selection, intention selection, focus timer start/pause/resume, session completion and lantern reward, and navigation between garden sections. A screenshot showed the laptop preview with simulated hand controls. This is user-reported emulator verification; it does **not** establish a physical Meta Quest test, sustained 60 fps, signed-out judge access, or a public demo video.
+
 ## Afterlight verification
 
 Run `npm run check`, the desktop and mobile smoke scripts, then `node scripts/xr-smoke.mjs --full` from a fresh emulator workspace. The full run uses the app’s pinch controls to enter Grove view and waits for the actual two-minute timer. It checks that the stepping stones light before completion, then verifies twelve lit stones, exactly one new session and one visible lantern in a fresh garden. It saves the real emulator recording under `artifacts/stillspace-afterlight-demo.webm`.
